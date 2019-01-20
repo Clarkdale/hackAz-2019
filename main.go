@@ -9,10 +9,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"net/http"
 	"strconv"
-	"text/template"
 )
 
-func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSecretKey string){
+func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSecretKey string, w http.ResponseWriter){
 	operatorAccountID := hedera.AccountID{Account: operatorAccountNumber}
 	client.SetNode(hedera.AccountID{Account: 3})
 	client.SetOperator(operatorAccountID, func() hedera.SecretKey {
@@ -30,6 +29,10 @@ func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSec
 
 	fmt.Printf("balance = %v tinybars\n", balance)
 	fmt.Printf("balance = %.5f hbars\n", float64(balance)/100000000.0)
+
+	fmt.Fprintf(w, "balance = %v tinybars\n", balance)
+	fmt.Fprintf(w, "balance = %.5f hbars\n", float64(balance)/100000000.0)
+	
 
 }
 
@@ -69,7 +72,7 @@ func check(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	checkBalance(client, operatorAccountNumber, operatorSecretKey)
+	checkBalance(client, operatorAccountNumber, operatorSecretKey, w)
 }
 
 func transferMoney(client hedera.Client, operatorSecretKey string,  operatorAccountNumber int64, targetAccountNumber int64, donationAmount int64){
@@ -241,14 +244,12 @@ func transfers(w http.ResponseWriter, r *http.Request) {
 	transferMoney(client, operatorSecretKey, int64(operatorAccountNumber), int64(targetAccountNumber),int64(donationAmount))
 }
 
-func handle(w http.ResponseWriter, r *http.Request) {
-	template.Must(template.ParseFiles("index.html")).Execute(w, nil)
-}
-
 func main() {
 	// Target account to get the balance for
 	// ex /transfers?from=id1&to=id2
-	http.HandleFunc("/", handle)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, r.URL.Path[1:])
+	})
 	http.HandleFunc("/transfers", transfers);
 	// ex /check?acct=id
 	http.HandleFunc("/check", check)
