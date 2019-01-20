@@ -81,7 +81,7 @@ func check(w http.ResponseWriter, r *http.Request) {
 	checkBalance(client, operatorAccountNumber, operatorSecretKey, w, r)
 }
 
-func transferMoney(client hedera.Client, operatorSecretKey string,  operatorAccountNumber int64, targetAccountNumber int64, donationAmount int64){
+func transferMoney(client hedera.Client, operatorSecretKey string,  operatorAccountNumber int64, targetAccountNumber int64, donationAmount int64, w http.ResponseWriter, r *http.Request){
 	// Read and decode the operator secret key
 	operatorAccountID := hedera.AccountID{Account: operatorAccountNumber}
 	operatorSecret, err := hedera.SecretKeyFromString(operatorSecretKey)
@@ -154,6 +154,7 @@ func transferMoney(client hedera.Client, operatorSecretKey string,  operatorAcco
 	}
 
 	if receipt.Status != hedera.StatusSuccess {
+		//http.ServeFile(w, r, "failure.html")
 		fmt.Errorf("transaction has a non-successful status: %v", receipt.Status.String())
 	}
 
@@ -174,6 +175,8 @@ func transferMoney(client hedera.Client, operatorSecretKey string,  operatorAcco
 	if err != nil {
 		panic(err)
 	}
+
+	http.ServeFile(w, r, "success.html")
 
 	fmt.Printf("new target account balance = %v\n", newTargetBalance)
 }
@@ -219,8 +222,6 @@ func transfers(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("two\n")
 			panic(err)
 		}
-		fmt.Fprintf(w, "Account from: %v\n", operatorAccountNumber)
-		fmt.Fprintf(w, "Secret from: %v\n", operatorSecretKey)
 	}
 
 	defer db.Close()
@@ -238,8 +239,6 @@ func transfers(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("3\n")
 			panic(err)
 		}
-		fmt.Fprintf(w, "Account target: %v\n", targetAccountNumber)
-		fmt.Fprintf(w, "Donation Amount: %v\n", donationAmount)
 	}
 
 	client, err := hedera.Dial("testnet.hedera.com:51005")
@@ -247,7 +246,7 @@ func transfers(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	
-	transferMoney(client, operatorSecretKey, int64(operatorAccountNumber), int64(targetAccountNumber),int64(donationAmount))
+	transferMoney(client, operatorSecretKey, int64(operatorAccountNumber), int64(targetAccountNumber),int64(donationAmount), w, r)
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
