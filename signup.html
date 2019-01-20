@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login - Charity Portal</title>
+    <title>Sign Up - Charity Portal</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,7 +44,7 @@
             <li class="nav-item px-lg-4">
               <a class="nav-link text-uppercase text-expanded" href="charity.html">Charities</a>
             </li>
-            <li class="nav-item active px-lg-4">
+            <li class="nav-item px-lg-4">
               <a class="nav-link text-uppercase text-expanded" href="login.html">Login</a>
             </li>
           </ul>
@@ -58,7 +58,7 @@
           <div class="col-xl-9 mx-auto">
             <div class="cta-inner text-center rounded">
               <h2 class="section-heading mb-4">
-                <span class="section-heading-upper">login</span>
+                <span class="section-heading-upper">Sign Up</span>
                 <!-- <span class="section-heading-lower">To You</span> -->
               </h2>
               <form>
@@ -69,10 +69,25 @@
                 <div class="form-group">
                   <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                 </div>
-                <a class="btn btn-primary btn-xl" href="#">Sign In</a>
                 <div class="form-group">
-                  <small id="emailHelp" class="form-text text-muted">Or <a href="signup.html">sign up here</a></small>
+                  <p>You must go to this website and sign up for Hedera cryptocurrency: <a href="https://portal.hedera.com/register">Sign Up to Hedera</a></p>
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Private Key">
+                  <small id="emailHelp" class="form-text text-muted">Then put your private key you got from Hedera above.</small>
                 </div>
+                <fieldset class="form-group">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" name="donatorOrCharity" id="donatorOrCharity1" value="donator" checked>
+                      Donator
+                    </label>
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" name="donatorOrCharity" id="donatorOrCharity2" value="charity">
+                      Charity
+                    </label>
+                  </div>
+                </fieldset>
+                <a class="btn btn-primary btn-xl" href="#">Sign Up</a>
+
               </form>
             </div>
           </div>
