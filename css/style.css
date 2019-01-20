@@ -96,7 +96,7 @@ p {
   color: rgb(220, 226, 170);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1000px) {
   #mainNav .navbar-nav .nav-item .nav-link {
     font-size: 0.9rem;
   }
@@ -121,7 +121,7 @@ p {
   position: relative;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1000px) {
   .intro .intro-img {
     width: 75%;
     float: right;
@@ -171,7 +171,7 @@ p {
   pointer-events: none;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1000px) {
   .about-heading .about-heading-img {
     position: relative;
     z-index: 0;
@@ -182,8 +182,13 @@ p {
     z-index: 1;
   }
 }
+.about-heading-2 .about-heading-content-2 {
+  margin-top: -5rem;
+  position: relative;
+  z-index: 1;
+}
 
-@media (min-width: 992px) {
+@media (min-width: 1000px) {
   .product-item .product-item-title {
     position: relative;
     z-index: 1;
@@ -218,7 +223,7 @@ p {
   color: rgb(220, 226, 170);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1000px) {
   .list-hours {
     width: 50%;
     font-size: 1.1rem;
@@ -267,6 +272,12 @@ p {
 #search-center {
   width: 100%;
   margin: 0 auto;
+}
+
+.charity-box{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 @media only screen and (min-width: 1000px) {
