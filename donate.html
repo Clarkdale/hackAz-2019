@@ -60,7 +60,7 @@
               <h2 class="section-heading mb-4">
                 <span class="section-heading-upper">Donating to ***TODO add name of the charity***</span>
               </h2>
-               <form>
+               <form onsubmit="sendRequest(); return false;">
                 <div class="form-group">
                   <input class="form-control" id="hbar-amount" aria-describedby="emailHelp" placeholder="Enter hbars amount">
                   <small id="emailHelp" class="form-text text-muted">That is $***TODO add conversion in dollars***</small>
@@ -81,6 +81,12 @@
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function sendRequest() {
+        let amt = document.getElementById('hbar-amount').value;
+        window.location.href = "transfers?from=3&to=4&amt=" + amt;
+      }
+    </script>
 
   </body>
 
