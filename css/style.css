@@ -182,6 +182,11 @@ p {
     z-index: 1;
   }
 }
+.about-heading-2 .about-heading-content-2 {
+  margin-top: -5rem;
+  position: relative;
+  z-index: 1;
+}
 
 @media (min-width: 992px) {
   .product-item .product-item-title {
@@ -267,6 +272,12 @@ p {
 #search-center {
   width: 100%;
   margin: 0 auto;
+}
+
+.charity-box{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 @media only screen and (min-width: 1000px) {
