@@ -276,7 +276,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("%v\n", id)
 	if (email != username) {
-		http.ServeFile(w, r, "login.html")
+		http.ServeFile(w, r, "failure.html")
 	} else {
 		masterId = id;
 		fmt.Printf("%v\n", masterId)
