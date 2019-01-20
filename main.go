@@ -9,11 +9,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"net/http"
 	"strconv"
+	//"honnef.co/go/js/dom"
 )
 
 var masterId int = -1;
 
-func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSecretKey string, w http.ResponseWriter){
+func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSecretKey string, w http.ResponseWriter, r *http.Request){
 	operatorAccountID := hedera.AccountID{Account: operatorAccountNumber}
 	client.SetNode(hedera.AccountID{Account: 3})
 	client.SetOperator(operatorAccountID, func() hedera.SecretKey {
@@ -26,15 +27,18 @@ func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSec
 	})
 	balance, err := client.Account(operatorAccountID).Balance().Get()
 	if err != nil {
-		
+		fmt.Printf("noooooooooo\n")
 	}
+	//stringToWrite := "balance = " + strconv.FormatUint(balance, 10)
+	//d := dom.GetWindow().Document()
+	//e1 := d.GetElementByID("accountBalance")
+	//e1.SetInnerHTML(stringToWrite)
 
 	fmt.Printf("balance = %v tinybars\n", balance)
 	fmt.Printf("balance = %.5f hbars\n", float64(balance)/100000000.0)
 
 	fmt.Fprintf(w, "balance = %v tinybars\n", balance)
 	fmt.Fprintf(w, "balance = %.5f hbars\n", float64(balance)/100000000.0)
-	
 
 }
 
@@ -74,7 +78,7 @@ func check(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	checkBalance(client, operatorAccountNumber, operatorSecretKey, w)
+	checkBalance(client, operatorAccountNumber, operatorSecretKey, w, r)
 }
 
 func transferMoney(client hedera.Client, operatorSecretKey string,  operatorAccountNumber int64, targetAccountNumber int64, donationAmount int64){
@@ -253,6 +257,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		password string 
 		isCharity int
 		accountNumber string
+		operatorAccountNumber int64
 		operatorSecretKey string
 
 	)
@@ -274,6 +279,15 @@ func login(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	client, err := hedera.Dial("testnet.hedera.com:51005")
+	if err != nil {
+		panic(err)
+	}
+
+	operatorAccountNumber, err = strconv.ParseInt(accountNumber, 10, 64); if err != nil {
+		panic(err)
+	}
+
 	fmt.Printf("%v\n", id)
 	if (email != username) {
 		http.ServeFile(w, r, "failure.html")
@@ -281,6 +295,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		masterId = id;
 		fmt.Printf("%v\n", masterId)
 		http.ServeFile(w, r, "profile.html")
+		checkBalance(client, operatorAccountNumber, operatorSecretKey, w, r)
 	}
 }
 

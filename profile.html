@@ -22,7 +22,7 @@
 
   </head>
 
-  <body onload="getID()">
+  <body>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
@@ -61,7 +61,7 @@
                 <span class="section-heading-upper">Hello there</span>
                 <!-- <span class="section-heading-lower">To You</span> -->
               </h2>
-              <p class="mb-0">Your Hedera account balance: ***TODO add their balance***</p>
+              <button onclick="clickMe()">Show your Hedera Balance</button>
             </div>
           </div>
         </div>
@@ -78,9 +78,8 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
-      function getID() {
-        var myParam = location.search.split('id=')[1];
-        console.log(myParam);
+      function clickMe() {
+        window.location.href = "check?acct=3"
       }
     </script>
   </body>
