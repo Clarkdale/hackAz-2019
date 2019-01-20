@@ -260,6 +260,15 @@ p {
   font-weight: 100 !important;
 }
 
+.form-check-label {
+  margin: 0 15px;
+}
+
+#search-center {
+  width: 100%;
+  margin: 0 auto;
+}
+
 @media only screen and (min-width: 1000px) {
   .form-control {
     width: 60%;
