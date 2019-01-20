@@ -61,7 +61,7 @@
                 <span class="section-heading-upper">login</span>
                 <!-- <span class="section-heading-lower">To You</span> -->
               </h2>
-              <form>
+              <form onsubmit="login(); return false;">
                 <div class="form-group">
                   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
                   <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -69,6 +69,7 @@
                 <div class="form-group">
                   <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                 </div>
+                <input type="submit">
                 <a class="btn btn-primary btn-xl" href="#">Sign In</a>
                 <div class="form-group">
                   <small id="emailHelp" class="form-text text-muted">Or <a href="signup.html">sign up here</a></small>
@@ -89,7 +90,14 @@
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    <script>
+      function login() {
+        let user = document.getElementById('exampleInputEmail1').value;
+        let pass = document.getElementById('exampleInputPassword1').value;
+        let url = 'login?user=' + user + "&pass=" + pass;
+        window.location.href = url;
+      }
+    </script>
   </body>
 
 </html>

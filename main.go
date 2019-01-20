@@ -11,6 +11,8 @@ import (
 	"strconv"
 )
 
+var masterId int = -1;
+
 func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSecretKey string, w http.ResponseWriter){
 	operatorAccountID := hedera.AccountID{Account: operatorAccountNumber}
 	client.SetNode(hedera.AccountID{Account: 3})
@@ -244,13 +246,52 @@ func transfers(w http.ResponseWriter, r *http.Request) {
 	transferMoney(client, operatorSecretKey, int64(operatorAccountNumber), int64(targetAccountNumber),int64(donationAmount))
 }
 
+func login(w http.ResponseWriter, r *http.Request) {
+	var (
+		id int
+		email string 
+		password string 
+		isCharity int
+		accountNumber string
+		operatorSecretKey string
+
+	)
+	username := r.FormValue("user")
+	passwordq := r.FormValue("pass")
+
+	db, err := sql.Open("mysql", "root:@/giveCoin"); if err != nil {
+		panic(err)
+	}
+
+	rows, err := db.Query("SELECT * FROM users WHERE email='" + username + "' AND password='" + passwordq + "'"); if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		err := rows.Scan(&id, &email, &password, &isCharity, &accountNumber, &operatorSecretKey); if err != nil {
+			panic(err)
+		}
+	}
+
+	fmt.Printf("%v\n", id)
+	if (email != username) {
+		http.ServeFile(w, r, "login.html")
+	} else {
+		masterId = id;
+		fmt.Printf("%v\n", masterId)
+		http.ServeFile(w, r, "profile.html")
+	}
+}
+
 func main() {
 	// Target account to get the balance for
 	// ex /transfers?from=id1&to=id2
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
 	})
-	http.HandleFunc("/transfers", transfers);
+	http.HandleFunc("/transfers", transfers)
+	http.HandleFunc("/login", login)
 	// ex /check?acct=id
 	http.HandleFunc("/check", check)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
