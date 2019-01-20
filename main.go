@@ -14,8 +14,9 @@ import (
 
 var masterId int = -1;
 
-func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSecretKey string, w http.ResponseWriter, r *http.Request){
+func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSecretKey string, recieverAccountNumber int64, w http.ResponseWriter, r *http.Request){
 	operatorAccountID := hedera.AccountID{Account: operatorAccountNumber}
+	targetAccount := hedera.AccountID{Account: recieverAccountNumber}
 	client.SetNode(hedera.AccountID{Account: 3})
 	client.SetOperator(operatorAccountID, func() hedera.SecretKey {
 		operatorSecret, err := hedera.SecretKeyFromString(operatorSecretKey)
@@ -25,7 +26,7 @@ func checkBalance(client hedera.Client, operatorAccountNumber int64, operatorSec
 
 		return operatorSecret
 	})
-	balance, err := client.Account(operatorAccountID).Balance().Get()
+	balance, err := client.Account(targetAccount).Balance().Get()
 	if err != nil {
 		fmt.Printf("noooooooooo\n")
 	}
@@ -78,7 +79,7 @@ func check(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	checkBalance(client, operatorAccountNumber, operatorSecretKey, w, r)
+	checkBalance(client, 1001, "302e020100300506032b657004220420aaa58cd91d6d5bbaac4e713f96021712804467c105438f8ed970f950e8cd1c79", operatorAccountNumber, w, r)
 }
 
 func transferMoney(client hedera.Client, operatorSecretKey string,  operatorAccountNumber int64, targetAccountNumber int64, donationAmount int64, w http.ResponseWriter, r *http.Request){
@@ -294,7 +295,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		masterId = id;
 		fmt.Printf("%v\n", masterId)
 		http.ServeFile(w, r, "profile.html")
-		checkBalance(client, operatorAccountNumber, operatorSecretKey, w, r)
+		checkBalance(client, 1001, "302e020100300506032b657004220420aaa58cd91d6d5bbaac4e713f96021712804467c105438f8ed970f950e8cd1c79", operatorAccountNumber, w, r)
 	}
 }
 
